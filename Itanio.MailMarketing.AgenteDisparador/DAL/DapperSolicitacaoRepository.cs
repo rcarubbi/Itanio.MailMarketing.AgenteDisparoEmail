@@ -24,7 +24,7 @@ namespace Itanio.MailMarketing.AgenteDisparador.DAL
                                                                 Status = @Status, 
                                                                 Percentual = @Percentual, 
                                                                 DataProcessamento = @DataProcessamento,
-                                                                Atualizada = 0
+                                                                DataAtualizacao = GETDATE()
                                                                 WHERE Id = @Id", 
                     new { Id = item.Id
                     , Status = (int)item.Status

@@ -17,6 +17,8 @@ namespace Itanio.MailMarketing.AgenteDisparador.Domain
         public decimal Quantidade { get; set; }
         public int Total { get; set; }
 
+        [Obsolete("Utilize a propriedade DataAtualizacao")]
         public bool Atualizada { get; set; }
+        public DateTime DataAtualizacao { get; set; }
     }
 }

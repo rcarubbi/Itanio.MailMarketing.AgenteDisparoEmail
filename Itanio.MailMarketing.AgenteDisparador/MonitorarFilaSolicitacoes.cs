@@ -124,7 +124,8 @@ namespace Itanio.MailMarketing.AgenteDisparador
 
         private void Enviar(Solicitacao solicitacao, CancellationTokenSource s)
         {
-            
+            ConfigurationManager.RefreshSection("appSettings");
+            ConfigurationManager.RefreshSection("CarubbiMailer");
             Console.WriteLine($"Início do processo de envio da solicitacao {solicitacao.Id}");
             ISolicitacaoRepository repo = new DapperSolicitacaoRepository();
 
@@ -163,7 +164,6 @@ namespace Itanio.MailMarketing.AgenteDisparador
                 qtd++;
                 try
                 {
-                    ConfigurationManager.RefreshSection("appSettings");
                     sender.Username = ConfigurationManager.AppSettings["SMTPUsuario"];
                     sender.Password = ConfigurationManager.AppSettings["SMTPSenha"];
                     Thread.Sleep(ConfigurationManager.AppSettings["TempoEspera"].To<int>(0) * 1000);
