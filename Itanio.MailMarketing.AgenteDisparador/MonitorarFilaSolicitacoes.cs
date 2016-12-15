@@ -163,6 +163,7 @@ namespace Itanio.MailMarketing.AgenteDisparador
                 qtd++;
                 try
                 {
+                    ConfigurationManager.RefreshSection("appSettings");
                     sender.Username = ConfigurationManager.AppSettings["SMTPUsuario"];
                     sender.Password = ConfigurationManager.AppSettings["SMTPSenha"];
                     Thread.Sleep(ConfigurationManager.AppSettings["TempoEspera"].To<int>(0) * 1000);
