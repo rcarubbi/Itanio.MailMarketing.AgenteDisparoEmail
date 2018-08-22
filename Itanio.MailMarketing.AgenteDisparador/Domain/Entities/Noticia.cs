@@ -76,6 +76,5 @@ namespace Itanio.MailMarketing.AgenteDisparador.Domain
         public string DescricaoFiguraNewsletter { get; set; }
 
         public int IdLink { get; set; }
-
     }
 }

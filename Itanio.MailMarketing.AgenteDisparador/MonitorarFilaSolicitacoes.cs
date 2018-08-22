@@ -1,23 +1,20 @@
-﻿using Carubbi.Mailer.Implementation;
-using Carubbi.Utils.Data;
+﻿using System;
+using System.Configuration;
+using System.Linq;
+using System.Threading;
+using Carubbi.Extensions;
+using Carubbi.Mailer.Implementation;
 using Itanio.MailMarketing.AgenteDisparador.DAL;
 using Itanio.MailMarketing.AgenteDisparador.Domain;
 using NLog;
 using Quartz;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Net.Mail;
-using System.Threading;
-using Carubbi.Extensions;
 
 namespace Itanio.MailMarketing.AgenteDisparador
 {
     [DisallowConcurrentExecution]
     public class MonitorarFilaSolicitacoes : IJob
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
 
         public void Execute(IJobExecutionContext context)
@@ -32,7 +29,6 @@ namespace Itanio.MailMarketing.AgenteDisparador
 
             var solicitacoes = service.ListarProximasSolicitacoesPendentes(1);
             foreach (var item in solicitacoes)
-            {
                 try
                 {
                     if (Processar(item))
@@ -46,6 +42,7 @@ namespace Itanio.MailMarketing.AgenteDisparador
                         {
                             item.Status = StatusSolicitacao.Lido;
                         }
+
                         repo.Atualizar(item);
                     }
                     else
@@ -60,24 +57,23 @@ namespace Itanio.MailMarketing.AgenteDisparador
                     item.Status = StatusSolicitacao.Erro;
                     repo.Atualizar(item);
                 }
-            }
         }
 
         private bool Processar(Solicitacao item)
         {
             Console.WriteLine($"Processando solicitacao de {item.Tipo.ToString()} id: {item.Id}");
-            bool resultado = true;
+            var resultado = true;
 
             switch (item.Tipo)
             {
                 case TipoSolicitacao.Enviar:
                 case TipoSolicitacao.Resumir:
                     if (!ServicoDisparadorEmail.Canceladores.ContainsKey(item.IdMensagem))
-                    {
                         try
                         {
                             var cancelationToken = new CancellationTokenSource();
-                            if (ThreadPool.QueueUserWorkItem(token => Enviar(item, (CancellationTokenSource)token), cancelationToken))
+                            if (ThreadPool.QueueUserWorkItem(token => Enviar(item, (CancellationTokenSource) token),
+                                cancelationToken))
                             {
                                 resultado = true;
                                 ServicoDisparadorEmail.Canceladores.Add(item.IdMensagem, cancelationToken);
@@ -91,11 +87,9 @@ namespace Itanio.MailMarketing.AgenteDisparador
                         {
                             resultado = false;
                         }
-                    }
                     else
-                    {
                         resultado = true;
-                    }
+
                     break;
                 case TipoSolicitacao.Parar:
                 case TipoSolicitacao.Cancelar:
@@ -105,17 +99,14 @@ namespace Itanio.MailMarketing.AgenteDisparador
                         ServicoDisparadorEmail.Canceladores[item.IdMensagem].Cancel();
                         ServicoDisparadorEmail.Canceladores.Remove(item.IdMensagem);
                     }
+
                     resultado = true;
 
                     if (item.Tipo == TipoSolicitacao.Cancelar)
-                    {
                         repoMsg.AtualizarStatus(StatusEnvio.Cancelado, item.IdMensagem);
-                    }
                     else
-                    {
                         repoMsg.AtualizarStatus(StatusEnvio.Iniciado, item.IdMensagem);
-                    }
-                    
+
                     break;
             }
 
@@ -133,25 +124,24 @@ namespace Itanio.MailMarketing.AgenteDisparador
             solicitacao.Status = StatusSolicitacao.Processando;
             repo.Atualizar(solicitacao);
 
-            CancellationToken token = s.Token;
+            var token = s.Token;
 
             IMensagemRepository repoMsg = new DapperMensagemRepository();
-            Mensagem mensagem = repoMsg.ObterPorId(solicitacao.IdMensagem);
+            var mensagem = repoMsg.ObterPorId(solicitacao.IdMensagem);
             var solicitacoesMensagem = repo.ListarPorMensagem(solicitacao.IdMensagem);
             var total = mensagem.Segmentos.SelectMany(m => m.Mailings).SelectMany(x => x.Contatos).Count();
             var qtd = solicitacoesMensagem.Max(x => x.Quantidade);
 
-           
+
             mensagem.StatusEnvio = StatusEnvio.EmAndamento;
             if (qtd == 0)
                 mensagem.InicioEnvio = DateTime.Now;
 
             repoMsg.Atualizar(mensagem);
 
-         
-            
-            SmtpSender sender = new SmtpSender();
-            foreach (KeyValuePair<int, MailMessage> envio in GeradorMensagens.Gerar(mensagem))
+
+            var sender = new SmtpSender();
+            foreach (var envio in GeradorMensagens.Gerar(mensagem))
             {
                 if (token.IsCancellationRequested)
                 {
@@ -162,19 +152,27 @@ namespace Itanio.MailMarketing.AgenteDisparador
                     ServicoDisparadorEmail.Canceladores.Remove(solicitacao.IdMensagem);
                     return;
                 }
+
                 qtd++;
                 try
                 {
                     sender.Username = ConfigurationManager.AppSettings["SMTPUsuario"];
                     sender.Password = ConfigurationManager.AppSettings["SMTPSenha"];
-                    Thread.Sleep(ConfigurationManager.AppSettings["TempoEspera"].To<int>(0) * 1000);
+                    Thread.Sleep(ConfigurationManager.AppSettings["TempoEspera"].To(0) * 1000);
                     sender.Send(envio.Value);
-                    
-                    repoMsg.InserirEnvioInfo(new EnvioInfo { IdMensagem = mensagem.Id, IdContato = envio.Key, Status = 1 });
+
+                    repoMsg.InserirEnvioInfo(
+                        new EnvioInfo {IdMensagem = mensagem.Id, IdContato = envio.Key, Status = 1});
                 }
                 catch (Exception ex)
                 {
-                    repoMsg.InserirEnvioInfo(new EnvioInfo { IdMensagem = mensagem.Id, IdContato = envio.Key, Status = 3, Erro = ex.Message });
+                    repoMsg.InserirEnvioInfo(new EnvioInfo
+                    {
+                        IdMensagem = mensagem.Id,
+                        IdContato = envio.Key,
+                        Status = 3,
+                        Erro = ex.Message
+                    });
                 }
                 finally
                 {
@@ -200,8 +198,5 @@ namespace Itanio.MailMarketing.AgenteDisparador
 
             token.WaitHandle.WaitOne(1000);
         }
-
-
     }
 }
-

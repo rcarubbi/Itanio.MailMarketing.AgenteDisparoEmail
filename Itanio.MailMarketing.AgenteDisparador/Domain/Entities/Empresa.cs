@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public string Destaque{ get; set; }
+        public string Destaque { get; set; }
 
         public string NomeFantasia { get; set; }
 
@@ -16,7 +16,7 @@
 
         public string Cidade { get; set; }
 
-        public string Estado{ get; set; }
+        public string Estado { get; set; }
 
         public string CEP { get; set; }
 
@@ -32,9 +32,9 @@
 
         public string WebSite { get; set; }
 
-        public string  Video { get; set; }
+        public string Video { get; set; }
 
-        public string  Atuacao { get; set; }
+        public string Atuacao { get; set; }
 
         public string Contato { get; set; }
 

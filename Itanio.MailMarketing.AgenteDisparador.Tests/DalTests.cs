@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Itanio.MailMarketing.AgenteDisparador.Domain;
-using Itanio.MailMarketing.AgenteDisparador.DAL;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
+using Itanio.MailMarketing.AgenteDisparador.DAL;
+using Itanio.MailMarketing.AgenteDisparador.Domain;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Itanio.MailMarketing.AgenteDisparador.Tests
 {
@@ -19,8 +18,6 @@ namespace Itanio.MailMarketing.AgenteDisparador.Tests
             Assert.IsTrue(mensagem != null);
         }
 
-        
-
 
         [TestMethod]
         public void LerSolicitacao()
@@ -28,7 +25,7 @@ namespace Itanio.MailMarketing.AgenteDisparador.Tests
             var service = new SolicitacaoService();
             ISolicitacaoRepository repo = new DapperSolicitacaoRepository();
             var solicitacoes = service.ListarProximasSolicitacoesPendentes(1);
-            
+
             Assert.IsTrue(solicitacoes.Count > 0);
         }
 
@@ -40,12 +37,11 @@ namespace Itanio.MailMarketing.AgenteDisparador.Tests
             ISolicitacaoRepository repo = new DapperSolicitacaoRepository();
             var solicitacao = service.ListarProximasSolicitacoesPendentes(1).First();
 
-            MonitorarFilaSolicitacoes m = new MonitorarFilaSolicitacoes();
-            PrivateObject p = new PrivateObject(m);
+            var m = new MonitorarFilaSolicitacoes();
+            var p = new PrivateObject(m);
             p.Invoke("Enviar", solicitacao, new CancellationTokenSource());
-            
-            Assert.IsTrue(true);
 
+            Assert.IsTrue(true);
         }
     }
 }

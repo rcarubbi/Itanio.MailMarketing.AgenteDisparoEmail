@@ -8,6 +8,7 @@ namespace Itanio.MailMarketing.AgenteDisparador.Domain
         {
             Contatos = new List<Contato>();
         }
+
         public int Id { get; set; }
 
         public int IdSegmento { get; set; }

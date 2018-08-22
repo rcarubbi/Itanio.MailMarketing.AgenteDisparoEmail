@@ -13,12 +13,13 @@ namespace Itanio.MailMarketing.AgenteDisparador.Domain
         public TipoSolicitacao Tipo { get; set; }
 
         public decimal Percentual { get; set; }
-        public DateTime? DataProcessamento { get;  set; }
+        public DateTime? DataProcessamento { get; set; }
         public decimal Quantidade { get; set; }
         public int Total { get; set; }
 
         [Obsolete("Utilize a propriedade DataAtualizacao")]
         public bool Atualizada { get; set; }
+
         public DateTime DataAtualizacao { get; set; }
     }
 }

@@ -3,7 +3,7 @@
     public enum StatusSolicitacao
     {
         Pendente,
-        Lido, 
+        Lido,
         Processando,
         Processada,
         Erro,

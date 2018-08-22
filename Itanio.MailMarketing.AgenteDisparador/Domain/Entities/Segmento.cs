@@ -9,6 +9,7 @@ namespace Itanio.MailMarketing.AgenteDisparador.Domain
         {
             Mailings = new List<Mailing>();
         }
+
         public int Id { get; set; }
 
         public string Nome { get; set; }

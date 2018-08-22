@@ -1,15 +1,15 @@
-﻿using NLog;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using NLog;
 
 namespace Itanio.MailMarketing.AgenteDisparador
 {
     public class ServicoDisparadorEmail
     {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         public static Dictionary<int, CancellationTokenSource> Canceladores { get; set; }
 
-        private static Logger logger = LogManager.GetCurrentClassLogger();
         public bool Iniciar()
         {
             Canceladores = new Dictionary<int, CancellationTokenSource>();

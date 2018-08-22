@@ -6,6 +6,6 @@
         EmAndamento,
         Iniciado,
         Completado,
-        Cancelado 
+        Cancelado
     }
 }

@@ -25,7 +25,5 @@
         public string Cargo { get; set; }
 
         public string Tratamento { get; set; }
-
-
     }
 }
