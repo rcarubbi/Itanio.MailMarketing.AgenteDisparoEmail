@@ -10,6 +10,7 @@ using System.Configuration;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading;
+using Carubbi.Extensions;
 
 namespace Itanio.MailMarketing.AgenteDisparador
 {

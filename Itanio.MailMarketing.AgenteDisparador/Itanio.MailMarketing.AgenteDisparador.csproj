@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Itanio.MailMarketing.AgenteDisparador</RootNamespace>
     <AssemblyName>Itanio.MailMarketing.AgenteDisparador</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -34,17 +34,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Carubbi.Extensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Carubbi.Extensions.1.0.0.0\lib\net472\Carubbi.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="Carubbi.Mailer, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Carubbi.Mailer.1.2.3.0\lib\net45\Carubbi.Mailer.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Carubbi.Mailer.1.2.3.0\lib\net472\Carubbi.Mailer.dll</HintPath>
     </Reference>
     <Reference Include="Carubbi.Mailer.Interfaces, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Carubbi.Mailer.Interfaces.1.2.0.0\lib\net45\Carubbi.Mailer.Interfaces.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Carubbi.Mailer.Interfaces.1.2.0.0\lib\net472\Carubbi.Mailer.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Carubbi.Utils, Version=1.4.2.9, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Carubbi.Utils.1.4.2.9\lib\net45\Carubbi.Utils.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Carubbi.ServiceLocator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Carubbi.ServiceLocator.1.0.0.0\lib\net472\Carubbi.ServiceLocator.dll</HintPath>
+    </Reference>
+    <Reference Include="Carubbi.Utils, Version=1.4.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Carubbi.Utils.1.4.3.0\lib\net45\Carubbi.Utils.dll</HintPath>
     </Reference>
     <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <HintPath>..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
